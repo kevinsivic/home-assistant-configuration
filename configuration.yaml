@@ -1,0 +1,137 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 43.0089
+  longitude: -78.6360
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 194
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+
+  # Customize device settings
+  customize:
+    media_player.bedroom:
+      friendly_name: Bedroom Chromecast
+      icon: mdi:television
+    binary_sensor.garage_sensor_2_0:
+      sensor_class: opening
+    script.garage_door_alarm:
+      hidden: true
+    switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0:
+      friendly_name: Garage Door Relay
+      hidden: true
+
+
+
+# Enables the frontend
+frontend:
+
+http:
+  # Uncomment this to add a password (recommended!)
+  api_password: <REDACTED>
+  # Uncomment this if you are using SSL or running in Docker etc
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+updater:
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+# Weather Prediction
+sensor:
+  platform: yr
+
+# Text to speech
+tts:
+  platform: google
+
+
+mqtt:
+  broker: 127.0.0.1
+  port: 1883
+  client_id: home-assistant-1
+  username: pi
+  password: raspberry
+
+# Enable Z-Wave controller
+zwave:
+  usb_path: /dev/ttyACM0
+
+# Pushbullet notifications
+notify:
+  - name: kevin
+    platform: pushbullet
+    api_key: <REDACTED>
+  - name: katie
+    platform: pushbullet
+    api_key: <REDACTED>
+
+# Groups
+group:
+  adults:
+    name: Adults!
+    view: no
+    entities:
+      - notify.kevin
+      - notify.katie
+
+# Automations
+automation:
+  - alias: Garage door is opened!
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.garage_sensor_2_0
+      to: "on"
+    action:
+      service: homeassistant.turn_on
+      entity_id: script.garage_door_alarm
+  - alias: Garage door was closed!
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.garage_sensor_2_0
+      to: "off"
+    action:
+      service: homeassistant.turn_off
+      entity_id: script.garage_door_alarm
+
+
+script:
+  garage_door_alarm:
+    alias: "Garage Door Alarm"
+    sequence:
+      - delay: 
+          minutes: 10
+      - service: notify.kevin
+        data:
+          title: "Garage is open"
+          message: "The garage has been open for 10 minutes!"
+      - service: notify.katie
+        data:
+          title: "Garage is open"
+          message: "The garage has been open for 10 minutes!"
+  trigger_garage_door:
+    alias: "Trigger Garage Door"
+    sequence:
+      - service: homeassistant.turn_on
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+      - delay: 00:00:01
+      - service: homeassistant.turn_off
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
