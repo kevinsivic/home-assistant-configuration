@@ -2,8 +2,8 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
   # Location required to calculate the time the sun rises and sets
-  latitude: 43.0089
-  longitude: -78.6360
+  latitude: !secret latitude
+  longitude: !secret longitude
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 194
   # metric for Metric, imperial for Imperial
@@ -17,23 +17,122 @@ homeassistant:
       friendly_name: Bedroom Chromecast
       icon: mdi:television
     binary_sensor.garage_sensor_2_0:
+      polling_intensity: 1
       sensor_class: opening
     script.garage_door_alarm:
+      hidden: true
+    script.trigger_garage_door:
       hidden: true
     switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0:
       friendly_name: Garage Door Relay
       hidden: true
-
-
+    sensor.garage_alarm_level_2_1:
+      hidden: true
+    sensor.garage_alarm_type_2_0:
+      hidden: true
+    sensor.garage_burglar_2_10:
+      hidden: true
+    sensor.garage_sourcenodeid_2_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_energy_6_0:
+      polling_intensity: 1
+    sensor.aeotec_dsb09104_home_energy_meter_energy_6_0_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_energy_6_0_3:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_exporting_6_32:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_exporting_6_32_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_exporting_6_32_3:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_interval_6_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_interval_6_2_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_interval_6_2_3:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_power_6_4:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_power_6_4_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_power_6_4_3:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_power_6_8:
+      polling_intensity: 1
+    sensor.aeotec_dsb09104_home_energy_meter_power_6_8_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_power_6_8_3:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_previous_reading_6_1:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_previous_reading_6_1_2:
+      hidden: true
+    sensor.aeotec_dsb09104_home_energy_meter_previous_reading_6_1_3:
+      hidden: true
+    
 
 # Enables the frontend
 frontend:
 
 http:
   # Uncomment this to add a password (recommended!)
-  api_password: <REDACTED>
-  # Uncomment this if you are using SSL or running in Docker etc
-  # base_url: example.duckdns.org:8123
+  api_password: !secret hass_api_password
+
+# Groups
+group:
+  default_view:
+    view: yes
+    entities:
+      - group.people
+      - group.garage
+      - group.weather
+  garage:
+    name: Garage
+    entities:
+      - binary_sensor.garage_sensor_2_0
+      - script.trigger_garage_door
+      - switch.garage
+  people:
+    name: People
+    entities:
+      - device_tracker.pi_bullhead
+      - device_tracker.pi_kevin
+  energy_monitoring: 
+    name: Energy
+    view: yes
+    entities:
+      - sensor.aeotec_dsb09104_home_energy_meter_power_6_8
+      - sensor.aeotec_dsb09104_home_energy_meter_energy_6_0
+      - binary_sensor.power_usage_low
+  weather:
+    name: Weather
+    entities:
+      - sun.sun
+      - sensor.dark_sky_icon
+      - sensor.dark_sky_apparent_temperature
+      - sensor.dark_sky_humidity
+      - sensor.dark_sky_temperature
+  media_players:
+    name: Media Players
+    view: yes
+    entities:
+      - media_player.bedroom
+      - media_player.living_room
+      - media_player.kitchen_home
+
+switch:
+  - platform: template
+    switches:
+      garage:
+        friendly_name: 'Garage'
+        value_template: "{{ is_state('binary_sensor.garage_sensor_2_0', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          entity_id: script.trigger_garage_door
+        turn_off:
+          service: homeassistant.turn_on
+          entity_id: script.trigger_garage_door
 
 # Checks for available updates
 updater:
@@ -47,49 +146,101 @@ conversation:
 # Enables support for tracking state changes over time.
 history:
 
+# Enables support for energy tracking in EmonCMS
+emoncms_history:
+  api_key: !secret emoncms_api_key
+  url: http://192.168.29.254/emoncms
+  inputnode: 1
+  whitelist:
+    - sensor.aeotec_dsb09104_home_energy_meter_interval_6_2
+    - sensor.aeotec_dsb09104_home_energy_meter_power_6_8
+    - sensor.aeotec_dsb09104_home_energy_meter_energy_6_0
+
 # View all events in a logbook
 logbook:
 
 # Track the sun
 sun:
 
-# Weather Prediction
+# Sensors 
 sensor:
-  platform: yr
+#  - platform: yr
+  - platform: darksky
+    api_key: !darksky_api_key
+    monitored_conditions:
+      - icon
+      - temperature
+      - apparent_temperature
+      - humidity
+  - platform: glances
+    host: 127.0.0.1
+    name: Home Assistant
+    resources:
+      - 'disk_use_percent'
+      - 'disk_use'
+      - 'disk_free'
+      - 'memory_use_percent'
+      - 'memory_use'
+      - 'memory_free'
+      - 'swap_use_percent'
+      - 'swap_use'
+      - 'swap_free'
+      - 'processor_load'
+      - 'process_running'
+      - 'process_total'
+      - 'process_thread'
+      - 'process_sleeping'
+  - platform: glances
+    host: 192.168.29.254
+    name: EmonCMS
+    resources:
+      - 'disk_use_percent'
+      - 'disk_use'
+      - 'disk_free'
+      - 'memory_use_percent'
+      - 'memory_use'
+      - 'memory_free'
+      - 'swap_use_percent'
+      - 'swap_use'
+      - 'swap_free'
+      - 'processor_load'
+      - 'process_running'
+      - 'process_total'
+      - 'process_thread'
+      - 'process_sleeping'
+
+binary_sensor:
+  - platform: template
+    sensors:
+      power_usage_low:
+        friendly_name: Power Usage Is Low!
+        value_template: '{% if states.sensor.aeotec_dsb09104_home_energy_meter_power_6_8.state %}{{ states.sensor.aeotec_dsb09104_home_energy_meter_power_6_8.state | float < 500 }}{% endif %}'
 
 # Text to speech
 tts:
   platform: google
-
 
 mqtt:
   broker: 127.0.0.1
   port: 1883
   client_id: home-assistant-1
   username: pi
-  password: raspberry
+  password: !secret mqtt_password
 
 # Enable Z-Wave controller
 zwave:
   usb_path: /dev/ttyACM0
+  polling_interval: 30000
+  debug: true
 
 # Pushbullet notifications
 notify:
   - name: kevin
     platform: pushbullet
-    api_key: <REDACTED>
+    api_key: !secret kevin_pushbullet_api_key
   - name: katie
     platform: pushbullet
-    api_key: <REDACTED>
-
-# Groups
-group:
-  adults:
-    name: Adults!
-    view: no
-    entities:
-      - notify.kevin
-      - notify.katie
+    api_key: !secret katie_pushbullet_api_key
 
 # Automations
 automation:
@@ -111,7 +262,30 @@ automation:
     action:
       service: homeassistant.turn_off
       entity_id: script.garage_door_alarm
-
+  - alias: Power usage is low
+    hide_entity: true
+    trigger:
+      platform: state
+      entity_id: binary_sensor.power_usage_low
+      to: 'on'
+      for:
+        minutes: 30
+    action:
+      service: notify.kevin
+      data:
+        title: "Power usage is low!"
+        message: "The power usage has been below 500 watts for 30 minutes!"
+  - alias: Garage door battery low
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.garage_sourcenodeid_2_2
+      value_template: "{{ state.attributes.battery_level }}"
+      below: 15
+    action:
+      service: notify.kevin
+      data:
+        title: "Garage sensor battery is low."
+        message: "Make sure you have a CR-123A battery and consider replacing."
 
 script:
   garage_door_alarm:
@@ -135,3 +309,7 @@ script:
       - delay: 00:00:01
       - service: homeassistant.turn_off
         entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+
+# Presence Detection
+device_tracker:
+  - platform: owntracks
