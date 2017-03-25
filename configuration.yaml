@@ -23,6 +23,10 @@ homeassistant:
       hidden: true
     script.trigger_garage_door:
       hidden: true
+    script.close_garage_door:
+      hidden: true
+    script.open_garage_door:
+      hidden: true
     switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0:
       friendly_name: Garage Door Relay
       hidden: true
@@ -70,7 +74,11 @@ homeassistant:
       hidden: true
     sensor.aeotec_dsb09104_home_energy_meter_previous_reading_6_1_3:
       hidden: true
-    
+    switch.ge_12722_onoff_relay_switch_switch_8_0:
+      friendly_name: Family Room Light
+    switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0:
+      friendly_name: Family Room Outlet
+      hidden: true
 
 # Enables the frontend
 frontend:
@@ -93,6 +101,8 @@ group:
       - binary_sensor.garage_sensor_2_0
       - script.trigger_garage_door
       - switch.garage
+      - script.close_garage_door
+      - script.open_garage_door
   people:
     name: People
     entities:
@@ -120,6 +130,12 @@ group:
       - media_player.bedroom
       - media_player.living_room
       - media_player.kitchen_home
+  lights:
+    name: Lights
+    view: yes
+    entities:
+      - switch.ge_12722_onoff_relay_switch_switch_8_0
+      - switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
 
 switch:
   - platform: template
@@ -166,7 +182,7 @@ sun:
 sensor:
 #  - platform: yr
   - platform: darksky
-    api_key: !darksky_api_key
+    api_key: !secret darksky_api_key
     monitored_conditions:
       - icon
       - temperature
@@ -286,6 +302,22 @@ automation:
       data:
         title: "Garage sensor battery is low."
         message: "Make sure you have a CR-123A battery and consider replacing."
+  - alias: Family Room Lights On
+    trigger:
+      platform: state
+      entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
+      to: 'on'
+    action:
+      service: homeassistant.turn_on
+      entity_id: switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
+  - alias: Family Room Lights Off
+    trigger:
+      platform: state
+      entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
+      to: 'off'
+    action:
+      service: homeassistant.turn_off
+      entity_id: switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
 
 script:
   garage_door_alarm:
@@ -309,6 +341,29 @@ script:
       - delay: 00:00:01
       - service: homeassistant.turn_off
         entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+  close_garage_door:
+    alias: "Close Garage Door"
+    sequence:
+      - condition: state
+        entity_id: binary_sensor.garage_sensor_2_0
+        state: 'on'
+      - service: homeassistant.turn_on
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+      - delay: 00:00:01
+      - service: homeassistant.turn_off
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+  open_garage_door:
+    alias: "Open Garage Door"
+    sequence:
+      - condition: state
+        entity_id: binary_sensor.garage_sensor_2_0
+        state: 'off'
+      - service: homeassistant.turn_on
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+      - delay: 00:00:01
+      - service: homeassistant.turn_off
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+
 
 # Presence Detection
 device_tracker:
