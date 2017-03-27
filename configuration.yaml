@@ -89,6 +89,19 @@ http:
   # Uncomment this to add a password (recommended!)
   api_password: !secret hass_api_password
 
+weblink:
+  entities:
+    - name: Energy Monitor
+      url: http://home.sivic.me:8122/emoncms/
+    - name: Router
+      url: http://192.168.29.1/
+
+panel_iframe:
+  energy_monitor:
+    title: Energy Monitor
+    url: !secret emoncms_monitor_url
+    icon: mdi:chart-line
+
 # Groups
 group:
   default_view:
@@ -98,6 +111,7 @@ group:
       - group.garage
       - group.weather
       - group.lights
+      - group.links
   garage:
     name: Garage
     entities:
@@ -139,6 +153,11 @@ group:
       - switch.ge_12722_onoff_relay_switch_switch_8_0
       - switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
       - light.ge_12724_3way_dimmer_switch_level_9_0
+  links:
+    name: Links
+    entities:
+      - weblink.router
+      - weblink.energy_monitor
 
 switch:
   - platform: template
