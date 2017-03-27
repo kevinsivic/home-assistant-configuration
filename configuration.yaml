@@ -79,6 +79,8 @@ homeassistant:
     switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0:
       friendly_name: Family Room Outlet
       hidden: true
+    light.ge_12724_3way_dimmer_switch_level_9_0:
+      friendly_name: Garage Door Dimmer
 
 # Enables the frontend
 frontend:
@@ -95,6 +97,7 @@ group:
       - group.people
       - group.garage
       - group.weather
+      - group.lights
   garage:
     name: Garage
     entities:
@@ -132,10 +135,10 @@ group:
       - media_player.kitchen_home
   lights:
     name: Lights
-    view: yes
     entities:
       - switch.ge_12722_onoff_relay_switch_switch_8_0
       - switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
+      - light.ge_12724_3way_dimmer_switch_level_9_0
 
 switch:
   - platform: template
@@ -318,6 +321,29 @@ automation:
     action:
       service: homeassistant.turn_off
       entity_id: switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
+  - alias: Light When Garage Is Opened
+    trigger:
+      platform: state
+      entity_id: binary_sensor.garage_sensor_2_0
+      to: 'on'
+    condition:
+      condition: sun
+      after: sunset
+    action:
+      - service: homeassistant.turn_on
+        entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+        data:
+          brightness: 128
+      - service: homeassistant.turn_on
+        entity_id: script.garage_door_light
+  - alias: Garage Door Light Turned Off
+    trigger:
+      platform: state
+      entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+      to: 'off'
+    action:
+      service: homeassistant.turn_off
+      entity_id: script.garage_door_light
 
 script:
   garage_door_alarm:
@@ -333,6 +359,13 @@ script:
         data:
           title: "Garage is open"
           message: "The garage has been open for 10 minutes!"
+  garage_door_light:
+    alias: "Turn Off Garage Door Light after 10 minutes"
+    sequence:
+      - delay:
+          minutes: 10
+      - service: homeassistant.turn_off
+        entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
   trigger_garage_door:
     alias: "Trigger Garage Door"
     sequence:
@@ -368,3 +401,10 @@ script:
 # Presence Detection
 device_tracker:
   - platform: owntracks
+
+zone:
+  name: Town
+  latitude: 43.009054
+  longitude: -78.636137
+  radius: 20000
+  passive: true
