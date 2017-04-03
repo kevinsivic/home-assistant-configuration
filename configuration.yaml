@@ -79,6 +79,8 @@ homeassistant:
     switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0:
       friendly_name: Family Room Outlet
       hidden: true
+    switch.ge_12722_onoff_relay_switch_switch_10_0:
+      friendly_name: Front Porch Outlet
     light.ge_12724_3way_dimmer_switch_level_9_0:
       friendly_name: Garage Door Dimmer
 
@@ -153,6 +155,7 @@ group:
       - switch.ge_12722_onoff_relay_switch_switch_8_0
       - switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
       - light.ge_12724_3way_dimmer_switch_level_9_0
+      - switch.ge_12722_onoff_relay_switch_switch_10_0
   links:
     name: Links
     entities:
@@ -392,6 +395,34 @@ automation:
         entity_id: media_player.kitchen_home
         data:
           message: "It's time for the bus, don't forget your clarinet! Have a wonderful day!"
+  - alias: Evening
+    trigger:
+      platform: sun
+      event: sunset
+      offset: '-00:45:00'
+    condition:
+      condition: or
+      conditions:
+        - condition: state
+          entity_id: 'device_tracker.pi_bullhead'
+          state: 'home'
+        - condition: state
+          entity_id: 'device_tracker.pi_kevin'
+          state: 'home'
+    action:
+      - service: homeassistant.turn_on
+        entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
+      - service: homeassistant.turn_on
+        entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+  - alias: Sleep Time
+    trigger:
+      platform: time
+      after: '23:30:00'
+    action:
+      - service: homeassistant.turn_off
+        entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
+      - service: homeassistant.turn_off
+        entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
 
 script:
   garage_door_alarm:
