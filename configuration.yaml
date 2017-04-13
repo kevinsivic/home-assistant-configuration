@@ -81,6 +81,8 @@ homeassistant:
       hidden: true
     switch.ge_12722_onoff_relay_switch_switch_10_0:
       friendly_name: Front Porch Outlet
+    switch.ge_12722_onoff_relay_switch_switch_11_0:
+      friendly_name: Outdoor Garage Lights
     light.ge_12724_3way_dimmer_switch_level_9_0:
       friendly_name: Garage Door Dimmer
 
@@ -156,6 +158,7 @@ group:
       - switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
       - light.ge_12724_3way_dimmer_switch_level_9_0
       - switch.ge_12722_onoff_relay_switch_switch_10_0
+      - switch.ge_12722_onoff_relay_switch_switch_11_0
   links:
     name: Links
     entities:
@@ -399,7 +402,7 @@ automation:
     trigger:
       platform: sun
       event: sunset
-      offset: '-00:45:00'
+      offset: '-00:30:00'
     condition:
       condition: or
       conditions:
@@ -414,6 +417,8 @@ automation:
         entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
       - service: homeassistant.turn_on
         entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+      - service: homeassistant.turn_on
+        entity_id: switch.ge_12722_onoff_relay_switch_switch_11_0
   - alias: Sleep Time
     trigger:
       platform: time
@@ -423,6 +428,8 @@ automation:
         entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
       - service: homeassistant.turn_off
         entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+      - service: homeassistant.turn_off
+        entity_id: switch.ge_12722_onoff_relay_switch_switch_11_0
 
 script:
   garage_door_alarm:
