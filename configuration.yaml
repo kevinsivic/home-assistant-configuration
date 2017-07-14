@@ -217,6 +217,7 @@ sensor:
       - apparent_temperature
       - humidity
       - precip_intensity
+      - cloud_cover
   - platform: glances
     host: 127.0.0.1
     name: Home Assistant

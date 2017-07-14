@@ -154,5 +154,40 @@
       entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
     - service: homeassistant.turn_off
       entity_id: switch.ge_12722_onoff_relay_switch_switch_11_0
-
-
+- alias: 'Rainy Day'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.dark_sky_cloud_coverage
+      above: 60
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: 'device_tracker.pi_katie'
+        state: 'home'
+      - condition: state
+        entity_id: 'device_tracker.pi_kevin'
+        state: 'home'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
+    - service: homeassistant.turn_on
+      entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+    - service: homeassistant.turn_on
+      entity_id: switch.ge_12722_onoff_relay_switch_switch_11_0
+- alias: 'Rain Stopped'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.dark_sky_cloud_coverage
+      below: 40
+  condition:
+    condition: sun
+    after: sunset
+    after_offset: '-01:00:00'
+  action:
+    - service: homeassistant.turn_off
+      entity_id: switch.ge_12722_onoff_relay_switch_switch_8_0
+    - service: homeassistant.turn_off
+      entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+    - service: homeassistant.turn_off
+      entity_id: switch.ge_12722_onoff_relay_switch_switch_11_0
