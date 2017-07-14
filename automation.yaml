@@ -79,35 +79,35 @@
   action:
     service: homeassistant.turn_off
     entity_id: script.garage_door_light
-- alias: Time for the bus
-  trigger:
-    platform: time
-    at: '07:37:00'
-  condition:
-    - condition: time
-      weekday:
-        - tue
-        - wed
-        - thu
-        - fri
-  action:
-    - service: tts.google_say
-      entity_id: media_player.kitchen_home
-      data:
-        message: "It's time for the bus, have a wonderful day!"
-- alias: Time for the bus
-  trigger:
-    platform: time
-    at: '07:37:00'
-  condition:
-    - condition: time
-      weekday:
-        - mon
-  action:
-    - service: tts.google_say
-      entity_id: media_player.kitchen_home
-      data:
-        message: "It's time for the bus, don't forget your clarinet! Have a wonderful day!"
+#- alias: Time for the bus
+#  trigger:
+#    platform: time
+#    at: '07:37:00'
+#  condition:
+#    - condition: time
+#      weekday:
+#        - tue
+#        - wed
+#        - thu
+#        - fri
+#  action:
+#    - service: tts.google_say
+#      entity_id: media_player.kitchen_home
+#      data:
+#        message: "It's time for the bus, have a wonderful day!"
+#- alias: Time for the bus
+#  trigger:
+#    platform: time
+#    at: '07:37:00'
+#  condition:
+#    - condition: time
+#      weekday:
+#        - mon
+#  action:
+#    - service: tts.google_say
+#      entity_id: media_player.kitchen_home
+#      data:
+#        message: "It's time for the bus, don't forget your clarinet! Have a wonderful day!"
 - alias: Good Morning Jacob
   trigger:
     platform: time
@@ -116,6 +116,7 @@
     - condition: time
       weekday:
         - thu
+        - fri
         - mon
   action:
     - service: tts.google_say
