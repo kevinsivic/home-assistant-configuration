@@ -1,0 +1,7 @@
+name: Lights On
+entities:
+  group.lights:
+    state: on
+  light.living_room_switch_level:
+    state: on
+    brightness_pct: 100

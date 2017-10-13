@@ -1,0 +1,4 @@
+name: Lights Off
+entities:
+  group.lights:
+    state: off

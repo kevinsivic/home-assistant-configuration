@@ -16,7 +16,7 @@ homeassistant:
     media_player.bedroom:
       friendly_name: Bedroom Chromecast
       icon: mdi:television
-    binary_sensor.garage_sensor_2_0:
+    binary_sensor.garage_sensor:
       polling_intensity: 1
       sensor_class: opening
     script.garage_door_alarm:
@@ -27,7 +27,7 @@ homeassistant:
       hidden: true
     script.open_garage_door:
       hidden: true
-    switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0:
+    switch.linear_fs20z_isolated_contact_fixture_module_switch:
       friendly_name: Garage Door Relay
       hidden: true
     sensor.garage_alarm_level_2_1:
@@ -74,17 +74,19 @@ homeassistant:
       hidden: true
     sensor.aeotec_dsb09104_home_energy_meter_previous_reading_6_1_3:
       hidden: true
-    switch.ge_12722_onoff_relay_switch_switch_8_0:
+    switch.family_room_switch_switch:
       friendly_name: Family Room Light
-    switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0:
+    switch.family_room_outlet_switch:
       friendly_name: Family Room Outlet
       hidden: true
-    switch.ge_12722_onoff_relay_switch_switch_10_0:
+    switch.front_porch_outlet_switch:
       friendly_name: Front Porch Outlet
-    switch.ge_12722_onoff_relay_switch_switch_11_0:
+    switch.outdoor_garage_lights_switch:
       friendly_name: Outdoor Garage Lights
-    light.ge_12724_3way_dimmer_switch_level_9_0:
+    light.garage_entrance_dimmer_level:
       friendly_name: Garage Door Dimmer
+    light.living_room_switch_level:
+      friendly_name: Living Room Light
 
 # Enables the frontend
 frontend:
@@ -106,6 +108,10 @@ panel_iframe:
     url: !secret emoncms_monitor_url
     icon: mdi:chart-line
 
+usps:
+  username: !secret usps_username
+  password: !secret usps_password
+
 # Groups
 group:
   default_view:
@@ -116,10 +122,11 @@ group:
       - group.weather
       - group.lights
       - group.links
+      - scene.lights_on
   garage:
     name: Garage
     entities:
-      - binary_sensor.garage_sensor_2_0
+      - binary_sensor.garage_sensor
       - script.trigger_garage_door
       - switch.garage
       - script.close_garage_door
@@ -154,23 +161,48 @@ group:
   lights:
     name: Lights
     entities:
-      - switch.ge_12722_onoff_relay_switch_switch_8_0
-      - switch.ge_12721_lighting_control_duplex_receptacle_switch_7_0
-      - light.ge_12724_3way_dimmer_switch_level_9_0
-      - switch.ge_12722_onoff_relay_switch_switch_10_0
-      - switch.ge_12722_onoff_relay_switch_switch_11_0
+      - switch.family_room_switch_switch
+      - switch.family_room_outlet_switch
+      - light.garage_entrance_dimmer_level
+      - light.living_room_switch_level
+      - switch.front_porch_outlet_switch
+      - switch.outdoor_garage_lights_switch
   links:
     name: Links
     entities:
       - weblink.router
       - weblink.energy_monitor
+  usps:
+    name: Mail
+    view: yes
+    entities:
+      - camera.usps_mail
+      - sensor.usps_mail
+      - sensor.usps_packages
+  pi_stats:
+    name: Pi Stats
+    view: yes
+    entities:
+      - sensor.home_assistant_cpu_load
+      - sensor.home_assistant_disk_free
+      - sensor.home_assistant_disk_use
+      - sensor.home_assistant_disk_use_2
+      - sensor.home_assistant_ram_free
+      - sensor.home_assistant_ram_use
+      - sensor.home_assistant_ram_use_2
+      - sensor.home_assistant_swap_free
+      - sensor.home_assistant_swap_use
+      - sensor.home_assistant_thread
+      - sensor.home_assistant_total
+      - sensor.home_assistant_running
+      - sensor.home_assistant_sleeping
 
 switch:
   - platform: template
     switches:
       garage:
         friendly_name: 'Garage'
-        value_template: "{{ is_state('binary_sensor.garage_sensor_2_0', 'on') }}"
+        value_template: "{{ is_state('binary_sensor.garage_sensor', 'on') }}"
         turn_on:
           service: homeassistant.turn_on
           entity_id: script.trigger_garage_door
@@ -277,6 +309,7 @@ mqtt:
 zwave:
   usb_path: /dev/ttyACM0
   polling_interval: 30000
+  new_entity_ids: true
   debug: true
 
 # Pushbullet notifications
@@ -287,6 +320,9 @@ notify:
   - name: katie
     platform: pushbullet
     api_key: !secret katie_pushbullet_api_key
+
+# Scenes
+scene: !include_dir_list scenes
 
 # Automations
 automation: !include automation.yaml
@@ -311,37 +347,37 @@ script:
       - delay:
           minutes: 10
       - service: homeassistant.turn_off
-        entity_id: light.ge_12724_3way_dimmer_switch_level_9_0
+        entity_id: light.garage_entrance_dimmer_level
   trigger_garage_door:
     alias: "Trigger Garage Door"
     sequence:
       - service: homeassistant.turn_on
-        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch
       - delay: 00:00:01
       - service: homeassistant.turn_off
-        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch
   close_garage_door:
     alias: "Close Garage Door"
     sequence:
       - condition: state
-        entity_id: binary_sensor.garage_sensor_2_0
+        entity_id: binary_sensor.garage_sensor
         state: 'on'
       - service: homeassistant.turn_on
-        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch
       - delay: 00:00:01
       - service: homeassistant.turn_off
-        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch
   open_garage_door:
     alias: "Open Garage Door"
     sequence:
       - condition: state
-        entity_id: binary_sensor.garage_sensor_2_0
+        entity_id: binary_sensor.garage_sensor
         state: 'off'
       - service: homeassistant.turn_on
-        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch
       - delay: 00:00:01
       - service: homeassistant.turn_off
-        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch_5_0
+        entity_id: switch.linear_fs20z_isolated_contact_fixture_module_switch
 
 
 # Presence Detection
