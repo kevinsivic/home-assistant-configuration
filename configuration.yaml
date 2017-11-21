@@ -98,12 +98,15 @@ homeassistant:
 # Enables the frontend
 frontend:
 
+logger:
+  default: critical
+
 http:
   # Uncomment this to add a password (recommended!)
   api_password: !secret hass_api_password
-  ssl_certificate: /home/homeassistant/.homeassistant/ssl/certificate.pem
-  ssl_key: /home/homeassistant/.homeassistant/ssl/privkey.pem
-  base_url: https://home.sivic.me/
+  ssl_certificate: /etc/letsencrypt/live/home.sivic.me/fullchain.pem
+  ssl_key: /etc/letsencrypt/live/home.sivic.me/privkey.pem
+  base_url: https://home.sivic.me
 
 weblink:
   entities:
