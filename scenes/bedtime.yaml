@@ -1,0 +1,16 @@
+name: Bedtime
+entities:
+  light.upstairs_hallway_dimmer_level:
+    state: on
+    brightness_pct: 10
+  light.stairway_dimmer_level:
+    state: on
+    brightness_pct: 10
+  light.living_room_switch_level:
+    state: off
+  light.garage_entrance_dimmer_level:
+    state: off
+  switch.family_room_switch_switch:
+    state: off
+  switch.outdoor_garage_lights_switch:
+    state: off

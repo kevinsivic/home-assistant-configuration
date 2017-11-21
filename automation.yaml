@@ -56,14 +56,15 @@
   action:
     service: homeassistant.turn_off
     entity_id: switch.family_room_outlet_switch
-- alias: Light When Garage Is Opened
+- alias: Light When Arrive Home
   trigger:
     platform: state
-    entity_id: binary_sensor.garage_sensor
-    to: 'on'
+    entity_id: device_tracker.pi_kevin, device_tracker.pi_katie
+    to: 'home'
   condition:
     condition: sun
     after: sunset
+    after_offset: '-00:30:00'
   action:
     - service: homeassistant.turn_on
       entity_id: light.garage_entrance_dimmer_level
@@ -141,30 +142,16 @@
          entity_id: 'device_tracker.pi_kevin'
          state: 'home'
   action:
-    - service: homeassistant.turn_on
-      entity_id: switch.family_room_switch_switch
-    - service: homeassistant.turn_on
-      entity_id: light.garage_entrance_dimmer_level
-    - service: homeassistant.turn_on
-      entity_id: switch.outdoor_garage_lights_switch
-    - service: light.turn_on
-      data:
-        entity_id: light.living_room_switch_level
-        brightness_pct: 30
-- alias: Sleep Time
+    service: scene.turn_on
+    entity_id: scene.evening
+- alias: Bedtime
   trigger:
     platform: time
     at: '23:30:00'
   action:
-    - service: homeassistant.turn_off
-      entity_id: switch.family_room_switch_switch
-    - service: homeassistant.turn_off
-      entity_id: light.garage_entrance_dimmer_level
-    - service: homeassistant.turn_off
-      entity_id: switch.outdoor_garage_lights_switch
-    - service: light.turn_off
-      entity_id: light.living_room_switch_level
-- alias: 'Rainy Day'
+    service: scene.turn_on
+    entity_id: scene.bedtime
+- alias: Overcast
   trigger:
     - platform: numeric_state
       entity_id: sensor.dark_sky_cloud_coverage
@@ -185,16 +172,8 @@
             entity_id: 'device_tracker.pi_kevin'
             state: 'home'
   action:
-    - service: homeassistant.turn_on
-      entity_id: switch.family_room_switch_switch
-    - service: homeassistant.turn_on
-      entity_id: light.garage_entrance_dimmer_level
-    - service: homeassistant.turn_on
-      entity_id: switch.outdoor_garage_lights_switch
-    - service: light.turn_on
-      data:
-        entity_id: light.living_room_switch_level
-        brightness_pct: 30
+    service: scene.turn_on
+    entity_id: scene.overcast
 - alias: 'Rain Stopped'
   trigger:
     - platform: numeric_state
@@ -205,20 +184,16 @@
     before: sunset
     after_offset: '-01:00:00'
   action:
-    - service: homeassistant.turn_off
-      entity_id: switch.family_room_switch_switch
-    - service: homeassistant.turn_off
-      entity_id: light.garage_entrance_dimmer_level
-    - service: homeassistant.turn_off
-      entity_id: switch.outdoor_garage_lights_switch
-    - service: light.turn_off
-      entity_id: light.living_room_switch_level
+    service: scene.turn_on
+    entity_id: scene.daytime
 - alias: Living Room too Dim
   trigger:
     - platform: numeric_state
       entity_id: light.living_room_switch_level
       value_template: '{{ state.attributes.brightness }}'
       below: 15
+      for:
+        seconds: 3
   action:
     - service: light.turn_on
       data:

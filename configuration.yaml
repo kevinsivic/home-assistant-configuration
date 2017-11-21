@@ -30,6 +30,9 @@ homeassistant:
     switch.linear_fs20z_isolated_contact_fixture_module_switch:
       friendly_name: Garage Door Relay
       hidden: true
+      google_assistant: false
+    switch.garage:
+      google_assistant: false
     sensor.garage_alarm_level_2_1:
       hidden: true
     sensor.garage_alarm_type_2_0:
@@ -87,6 +90,10 @@ homeassistant:
       friendly_name: Garage Door Dimmer
     light.living_room_switch_level:
       friendly_name: Living Room Light
+    light.stairway_dimmer_level:
+      friendly_name: Stairway Dimmer
+    light.upstairs_hallway_dimmer_level:
+      friendly_name: Upstairs Hallway Dimmer
 
 # Enables the frontend
 frontend:
@@ -94,6 +101,9 @@ frontend:
 http:
   # Uncomment this to add a password (recommended!)
   api_password: !secret hass_api_password
+  ssl_certificate: /home/homeassistant/.homeassistant/ssl/certificate.pem
+  ssl_key: /home/homeassistant/.homeassistant/ssl/privkey.pem
+  base_url: https://home.sivic.me/
 
 weblink:
   entities:
@@ -140,8 +150,8 @@ group:
     name: Energy
     view: yes
     entities:
-      - sensor.aeotec_dsb09104_home_energy_meter_power_6_8
-      - sensor.aeotec_dsb09104_home_energy_meter_energy_6_0
+      - sensor.aeotec_dsb09104_home_energy_meter_power
+      - sensor.aeotec_dsb09104_home_energy_meter_energy
       - binary_sensor.power_usage_low
   weather:
     name: Weather
@@ -158,6 +168,14 @@ group:
       - media_player.bedroom
       - media_player.living_room
       - media_player.kitchen_home
+  scenes:
+    name: Scenes
+    view: yes
+    entities:
+      - scene.daytime
+      - scene.overcast
+      - scene.evening
+      - scene.bedtime
   lights:
     name: Lights
     entities:
@@ -165,6 +183,8 @@ group:
       - switch.family_room_outlet_switch
       - light.garage_entrance_dimmer_level
       - light.living_room_switch_level
+      - light.stairway_dimmer_level
+      - light.upstairs_hallway_dimmer_level
       - switch.front_porch_outlet_switch
       - switch.outdoor_garage_lights_switch
   links:
@@ -179,6 +199,8 @@ group:
       - camera.usps_mail
       - sensor.usps_mail
       - sensor.usps_packages
+      - sensor.ups
+      - sensor.fedex
   pi_stats:
     name: Pi Stats
     view: yes
@@ -286,6 +308,12 @@ sensor:
       - 'process_total'
       - 'process_thread'
       - 'process_sleeping'
+  - platform: fedex
+    username: !secret fedex_username
+    password: !secret fedex_password
+  - platform: ups
+    username: !secret ups_username
+    password: !secret ups_password
 
 binary_sensor:
   - platform: template
@@ -304,6 +332,8 @@ mqtt:
   client_id: home-assistant-1
   username: pi
   password: !secret mqtt_password
+
+config:
 
 # Enable Z-Wave controller
 zwave:
@@ -390,3 +420,13 @@ zone:
   longitude: -78.636137
   radius: 20000
   passive: true
+
+google_assistant:
+  project_id: sivic-homeassistant
+  client_id: asdlkfadLKFSDKLJSFjklsLKJ
+  access_token: UCydXqqXRIocS7Tj4M440HPJAWNIHH7mITTuIjb79gQFdzJueOaBa7Hl02E9vfl73ObeC6IJiKMrunbNXJKBiiHsN6sRmHxfDDty
+  exposed_domains:
+    - switch
+    - light
+  expose_by_default: true
+
