@@ -8,6 +8,8 @@ entities:
     brightness_pct: 10
   light.living_room_switch_level:
     state: off
+  light.front_hallway_dimmer_level:
+    state: off
   light.garage_entrance_dimmer_level:
     state: off
   switch.family_room_switch_switch:

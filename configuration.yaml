@@ -94,6 +94,8 @@ homeassistant:
       friendly_name: Stairway Dimmer
     light.upstairs_hallway_dimmer_level:
       friendly_name: Upstairs Hallway Dimmer
+    light.front_hallway_dimmer_level:
+      friendly_name: Front Hallway Dimmer
 
 # Enables the frontend
 frontend:
@@ -190,6 +192,7 @@ group:
       - light.upstairs_hallway_dimmer_level
       - switch.front_porch_outlet_switch
       - switch.outdoor_garage_lights_switch
+      - light.front_hallway_dimmer_level
   links:
     name: Links
     entities:

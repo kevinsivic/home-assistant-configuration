@@ -9,6 +9,9 @@ entities:
   light.living_room_switch_level:
     state: on
     brightness_pct: 50
+  light.front_hallway_dimmer_level:
+    state: on
+    brightness_pct: 50
   light.garage_entrance_dimmer_level:
     state: on
     brightness_pct: 75
