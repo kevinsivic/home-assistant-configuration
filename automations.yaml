@@ -1,0 +1,216 @@
+- id: garage_door_opened
+  alias: Garage door is opened!
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.garage_sensor
+    to: 'on'
+  action:
+    service: homeassistant.turn_on
+    entity_id: script.garage_door_alarm
+- id: garage_door_closed
+  alias: Garage door was closed!
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.garage_sensor
+    to: 'off'
+  action:
+    service: homeassistant.turn_off
+    entity_id: script.garage_door_alarm
+- id: power_usage_low
+  alias: Power usage is low
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.power_usage_low
+    to: 'on'
+    for:
+      minutes: 30
+  action:
+    service: notify.kevin
+    data:
+      title: Power usage is low!
+      message: The power usage has been below 500 watts for 30 minutes!
+- id: garage_door_battery_low
+  alias: Garage door battery low
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.garage_sourcenodeid_2_2
+    value_template: '{{ state.attributes.battery_level }}'
+    below: 15
+  action:
+    service: notify.kevin
+    data:
+      title: Garage sensor battery is low.
+      message: Make sure you have a CR-123A battery and consider replacing.
+- id: family_room_lights_on
+  alias: Family Room Lights On
+  trigger:
+    platform: state
+    entity_id: switch.family_room_switch_switch
+    to: 'on'
+  action:
+    service: homeassistant.turn_on
+    entity_id: switch.family_room_outlet_switch
+- id: family_room_lights_off
+  alias: Family Room Lights Off
+  trigger:
+    platform: state
+    entity_id: switch.family_room_switch_switch
+    to: 'off'
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.family_room_outlet_switch
+- id: arrive_home
+  alias: Light When Arrive Home
+  trigger:
+    platform: state
+    entity_id: device_tracker.pi_kevin, device_tracker.pi_katie
+    to: home
+  condition:
+    condition: sun
+    after: sunset
+    after_offset: -00:30:00
+  action:
+  - service: homeassistant.turn_on
+    entity_id: light.garage_entrance_dimmer_level
+    data:
+      brightness: 128
+  - service: homeassistant.turn_on
+    entity_id: script.garage_door_light
+- id: garage_door_light_turned_off
+  alias: Garage Door Light Turned Off
+  trigger:
+    platform: state
+    entity_id: light.garage_entrance_dimmer_level
+    to: 'off'
+  action:
+    service: homeassistant.turn_off
+    entity_id: script.garage_door_light
+- id: time_for_bus
+  alias: Time for the bus
+  trigger:
+    platform: time
+    at: 07:34:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - fri
+  action:
+  - service: tts.google_say
+    entity_id: media_player.home
+    data:
+      message: It's time for the bus, I hope you all have a wonderful day!
+- id: bus_on_band_day
+  alias: Bus on a band day
+  trigger:
+    platform: time
+    at: 07:34:00
+  condition:
+  - condition: time
+    weekday:
+    - tue
+    - wed
+    - thu
+  action:
+  - service: tts.google_say
+    entity_id: media_player.home
+    data:
+      message: It's time for the bus, don't forget your clarinet Jacob! I hope you
+        all have a wonderful day!
+- id: evening
+  alias: Evening
+  trigger:
+    platform: sun
+    event: sunset
+    offset: -00:30:00
+  condition:
+    condition: or
+    conditions:
+    - condition: state
+      entity_id: device_tracker.pi_katie
+      state: home
+    - condition: state
+      entity_id: device_tracker.pi_kevin
+      state: home
+  action:
+    service: scene.turn_on
+    entity_id: scene.evening
+- id: bedtime
+  alias: Bedtime
+  trigger:
+    platform: time
+    at: '23:30:00'
+  action:
+    service: scene.turn_on
+    entity_id: scene.bedtime
+- id: overcast
+  alias: Overcast
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dark_sky_cloud_coverage
+    above: 60
+  condition:
+    condition: and
+    conditions:
+    - condition: sun
+      after: sunrise
+    - condition: sun
+      before: sunset
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: device_tracker.pi_katie
+        state: home
+      - condition: state
+        entity_id: device_tracker.pi_kevin
+        state: home
+  action:
+    service: scene.turn_on
+    entity_id: scene.overcast
+- id: skies_clearing
+  alias: Rain Stopped
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dark_sky_cloud_coverage
+    below: 40
+  condition:
+    condition: sun
+    before: sunset
+    after_offset: -01:00:00
+  action:
+    service: scene.turn_on
+    entity_id: scene.daytime
+- id: living_room_too_dim
+  alias: Living Room too Dim
+  trigger:
+  - platform: numeric_state
+    entity_id: light.living_room_switch_level
+    value_template: '{{ state.attributes.brightness }}'
+    below: 15
+    for:
+      seconds: 3
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.living_room_switch_level
+      brightness_pct: 15
+- action:
+    service: scene.turn_on
+    entity_id: scene.dim_hallway
+  alias: Kids Bedtime
+  condition:
+    condition: or
+    conditions:
+    - condition: state
+      entity_id: device_tracker.pi_katie
+      state: home
+    - condition: state
+      entity_id: device_tracker.pi_kevin
+      state: home
+  id: '1511405913546'
+  trigger:
+  - at: '20:00'
+    platform: time

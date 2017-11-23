@@ -1,0 +1,8 @@
+name: Dim Hallway
+entities:
+  light.upstairs_hallway_dimmer_level:
+    state: on
+    brightness_pct: 10
+  light.stairway_dimmer_level:
+    state: on
+    brightness_pct: 10

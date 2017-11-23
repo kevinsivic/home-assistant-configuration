@@ -181,6 +181,7 @@ group:
       - scene.overcast
       - scene.evening
       - scene.bedtime
+      - scene.dim_hallway
   lights:
     name: Lights
     entities:
@@ -361,7 +362,7 @@ notify:
 scene: !include_dir_list scenes
 
 # Automations
-automation: !include automation.yaml
+automation: !include automations.yaml
 
 script:
   garage_door_alarm:
