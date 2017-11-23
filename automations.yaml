@@ -197,6 +197,15 @@
     data:
       entity_id: light.living_room_switch_level
       brightness_pct: 15
+- id: christmas
+  alias: Christmas
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
+  action:
+    service: scene.turn_on
+    entity_id: scene.christmas 
 - action:
     service: scene.turn_on
     entity_id: scene.dim_hallway
