@@ -97,8 +97,12 @@ homeassistant:
     light.front_hallway_dimmer_level:
       friendly_name: Front Hallway Dimmer
 
+# Enable the map
+map:
+
 # Enables the frontend
 frontend:
+  javascript_version: latest
 
 logger:
   default: critical
