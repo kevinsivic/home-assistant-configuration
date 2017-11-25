@@ -206,6 +206,14 @@
   action:
     service: scene.turn_on
     entity_id: scene.christmas 
+- id: christmas_off
+  alias: Christmas Lights Off
+  trigger:
+  - platform: time
+    at: 00:30
+  action:
+    service: scene.turn_on
+    entity_id: scene.christmas_off
 - action:
     service: scene.turn_on
     entity_id: scene.dim_hallway

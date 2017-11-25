@@ -1,6 +1,6 @@
-name: Christmas
+name: Christmas Off
 entities:
   switch.front_porch_outlet_switch:
-    state: on
+    state: off
   switch.outdoor_garage_lights_switch:
-    state: on
+    state: off

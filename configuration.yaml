@@ -183,6 +183,7 @@ group:
       - scene.bedtime
       - scene.dim_hallway
       - scene.christmas
+      - scene.christmas_off
   lights:
     name: Lights
     entities:
