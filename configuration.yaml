@@ -434,8 +434,10 @@ google_assistant:
   project_id: sivic-homeassistant
   client_id: asdlkfadLKFSDKLJSFjklsLKJ
   access_token: UCydXqqXRIocS7Tj4M440HPJAWNIHH7mITTuIjb79gQFdzJueOaBa7Hl02E9vfl73ObeC6IJiKMrunbNXJKBiiHsN6sRmHxfDDty
+  api_key: AIzaSyCz8gWKpFtqWV_f72QBeTJtKh_N_pWvhfU
   exposed_domains:
     - switch
     - light
+    - scene
   expose_by_default: true
 
