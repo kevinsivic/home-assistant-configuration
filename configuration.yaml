@@ -181,6 +181,7 @@ group:
     name: Scenes
     view: yes
     entities:
+      - scene.morning
       - scene.daytime
       - scene.overcast
       - scene.evening
@@ -188,6 +189,7 @@ group:
       - scene.dim_hallway
       - scene.christmas
       - scene.christmas_off
+      - scene.alloff
   lights:
     name: Lights
     entities:
@@ -263,9 +265,12 @@ emoncms_history:
   url: http://192.168.29.254/emoncms
   inputnode: 1
   whitelist:
-    - sensor.aeotec_dsb09104_home_energy_meter_interval_6_2
-    - sensor.aeotec_dsb09104_home_energy_meter_power_6_8
-    - sensor.aeotec_dsb09104_home_energy_meter_energy_6_0
+    - sensor.aeotec_dsb09104_home_energy_meter_interval
+    - sensor.aeotec_dsb09104_home_energy_meter_power_4
+    - sensor.aeotec_dsb09104_home_energy_meter
+#    - sensor.aeotec_dsb09104_home_energy_meter_interval_6_2
+#    - sensor.aeotec_dsb09104_home_energy_meter_power_6_8
+#    - sensor.aeotec_dsb09104_home_energy_meter_energy_6_0
 
 # View all events in a logbook
 logbook:

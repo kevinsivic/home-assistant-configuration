@@ -1,0 +1,18 @@
+name: AllOff
+entities:
+  light.upstairs_hallway_dimmer_level:
+    state: off
+  light.stairway_dimmer_level:
+    state: off
+  light.living_room_switch_level:
+    state: off
+  light.front_hallway_dimmer_level:
+    state: off
+  light.garage_entrance_dimmer_level:
+    state: off
+  switch.family_room_switch_switch:
+    state: off
+  switch.outdoor_garage_lights_switch:
+    state: off
+  switch.front_porch_outlet_switch:
+    state: off
