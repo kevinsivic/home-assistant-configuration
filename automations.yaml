@@ -142,7 +142,7 @@
   alias: No One's Home
   trigger:
     platform: state
-    entity_id: device_tracker.pi_kevin, device_tracker.pi_katie
+    entity_id: group.people
     to: not_home
   action:
     service: scene.turn_on
