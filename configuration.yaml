@@ -190,6 +190,7 @@ group:
       - scene.christmas
       - scene.christmas_off
       - scene.alloff
+      - scene.watching_living_room_tv
   lights:
     name: Lights
     entities:

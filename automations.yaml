@@ -62,6 +62,19 @@
   action:
     service: homeassistant.turn_off
     entity_id: switch.family_room_outlet_switch
+- id: living_room_watch_tv
+  alias: Watching the living room TV
+  trigger:
+    platform: state
+    entity_id: media_player.living_room
+    to: 'playing'
+  condition:
+    condition: state
+    entity_id: light.living_room_switch_level
+    state: 'on'
+  action:
+    service: scene.turn_on
+    entity_id: scene.watching_living_room_tv
 - id: arrive_home
   alias: Light When Arrive Home
   trigger:

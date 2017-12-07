@@ -1,0 +1,5 @@
+name: Watching Living Room TV
+entities:
+  light.living_room_switch_level:
+    state: on
+    brightness_pct: 25
