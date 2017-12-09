@@ -1,6 +1,6 @@
-name: Watching Living Room TV
+name: Living Room TV Stopped
 entities:
   light.living_room_switch_level:
     state: on
-    brightness_pct: 15
+    brightness_pct: 25
     transition: 2
