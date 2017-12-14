@@ -1,0 +1,6 @@
+name: Living Room TV Stopped
+entities:
+  light.master_bedroom_level:
+    state: on
+    brightness_pct: 25
+    transition: 2

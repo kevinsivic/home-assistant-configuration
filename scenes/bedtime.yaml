@@ -16,3 +16,6 @@ entities:
     state: off
   switch.outdoor_garage_lights_switch:
     state: off
+  light.master_bedroom_level:
+    state: on
+    brightness_pct: 15

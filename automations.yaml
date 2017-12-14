@@ -88,6 +88,32 @@
   action:
     service: scene.turn_on
     entity_id: scene.living_room_tv_stopped
+- id: master_watch_tv
+  alias: Watching the master bedroom TV
+  trigger:
+    platform: state
+    entity_id: media_player.bedroom
+    to: 'playing'
+  condition:
+    condition: state
+    entity_id: light.master_bedroom_level
+    state: 'on'
+  action:
+    service: scene.turn_on
+    entity_id: scene.watching_master_bedroom_tv
+- id: master_tv_stopped
+  alias: Master bedroom TV stopped
+  trigger:
+    platform: state
+    entity_id: media_player.bedroom
+    from: 'playing'
+  condition:
+    condition: state
+    entity_id: light.master_bedroom_level
+    state: 'on'
+  action:
+    service: scene.turn_on
+    entity_id: scene.master_bedroom_tv_stopped
 - id: arrive_home
   alias: Light When Arrive Home
   trigger:

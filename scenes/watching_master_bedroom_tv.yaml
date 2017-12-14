@@ -1,0 +1,6 @@
+name: Watching Living Room TV
+entities:
+  light.master_bedroom_level:
+    state: on
+    brightness_pct: 15
+    transition: 2

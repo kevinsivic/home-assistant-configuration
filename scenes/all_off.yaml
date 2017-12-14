@@ -14,5 +14,7 @@ entities:
     state: off
   switch.outdoor_garage_lights_switch:
     state: off
+  light.master_bedroom_level:
+    state: off
 #  switch.front_porch_outlet_switch:
 #    state: off

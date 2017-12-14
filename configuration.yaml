@@ -96,9 +96,14 @@ homeassistant:
       friendly_name: Upstairs Hallway Dimmer
     light.front_hallway_dimmer_level:
       friendly_name: Front Hallway Dimmer
+    light.master_bedroom_level:
+      friendly_name: Master Bedroom Dimmer
 
 # Enable the map
 map:
+
+# Shopping List
+shopping_list:
 
 # Enables the frontend
 frontend:
@@ -203,6 +208,7 @@ group:
       - switch.front_porch_outlet_switch
       - switch.outdoor_garage_lights_switch
       - light.front_hallway_dimmer_level
+      - light.master_bedroom_level
   links:
     name: Links
     entities:
