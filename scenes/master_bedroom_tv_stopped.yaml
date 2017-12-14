@@ -1,4 +1,4 @@
-name: Living Room TV Stopped
+name: Master Bedroom TV Stopped
 entities:
   light.master_bedroom_level:
     state: on

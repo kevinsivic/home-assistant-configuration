@@ -1,4 +1,4 @@
-name: Watching Living Room TV
+name: Watching Master Bedroom TV
 entities:
   light.master_bedroom_level:
     state: on
