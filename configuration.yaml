@@ -224,6 +224,10 @@ group:
     name: Pi Stats
     view: yes
     entities:
+      - group.home_assistant_stats
+  home_assistant_stats:
+    name: Home Assistant Server
+    entities:
       - sensor.home_assistant_cpu_load
       - sensor.home_assistant_disk_free
       - sensor.home_assistant_disk_use
