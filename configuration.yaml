@@ -108,7 +108,7 @@ frontend:
 
 logger:
   default: critical
-  logs:
+#  logs:
 #    homeassistant.components.fedex: info
 
 recorder:
