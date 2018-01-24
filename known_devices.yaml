@@ -15,11 +15,11 @@ pi_kevin:
   track: true
   vendor:
 
-pi_bullhead:
+pi_jacob:
   hide_if_away: false
   icon:
   mac:
-  name: pi
-  picture:
+  name: Jacob
+  picture: /local/Jacob.jpg
   track: true
   vendor:

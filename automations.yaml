@@ -118,7 +118,7 @@
   alias: Light When Arrive Home
   trigger:
     platform: state
-    entity_id: device_tracker.pi_kevin, device_tracker.pi_katie
+    entity_id: device_tracker.pi_kevin, device_tracker.pi_katie, device_tracker.pi_jacob
     to: home
   condition:
     condition: sun
@@ -187,6 +187,9 @@
     - condition: state
       entity_id: device_tracker.pi_kevin
       state: home
+    - condition: state
+      entity_id: device_tracker.pi_jacob
+      state: home
   action:
     service: scene.turn_on
     entity_id: scene.evening
@@ -235,6 +238,9 @@
         state: home
       - condition: state
         entity_id: device_tracker.pi_kevin
+        state: home
+      - condition: state
+        entity_id: device_tracker.pi_jacob
         state: home
   action:
     service: scene.turn_on
@@ -295,6 +301,9 @@
       state: home
     - condition: state
       entity_id: device_tracker.pi_kevin
+      state: home
+    - condition: state
+      entity_id: device_tracker.pi_jacob
       state: home
   id: '1511405913546'
   trigger:

@@ -102,15 +102,15 @@ homeassistant:
 # Enable the map
 map:
 
-# Shopping List
-shopping_list:
-
 # Enables the frontend
 frontend:
   javascript_version: latest
 
 logger:
   default: critical
+
+recorder:
+  db_url: mysql://homeassistant:Woovo5ko@localhost/hass
 
 http:
   # Uncomment this to add a password (recommended!)
@@ -131,10 +131,6 @@ panel_iframe:
     title: Energy Monitor
     url: !secret emoncms_monitor_url
     icon: mdi:chart-line
-
-usps:
-  username: !secret usps_username
-  password: !secret usps_password
 
 # Groups
 group:
@@ -160,6 +156,7 @@ group:
     entities:
       - device_tracker.pi_katie
       - device_tracker.pi_kevin
+      - device_tracker.pi_jacob
   energy_monitoring: 
     name: Energy
     view: yes
