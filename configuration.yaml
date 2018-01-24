@@ -108,6 +108,8 @@ frontend:
 
 logger:
   default: critical
+  logs:
+#    homeassistant.components.fedex: info
 
 recorder:
   db_url: mysql://homeassistant:Woovo5ko@localhost/hass
@@ -157,9 +159,13 @@ group:
       - device_tracker.pi_katie
       - device_tracker.pi_kevin
       - device_tracker.pi_jacob
-  energy_monitoring: 
+  energy_view: 
     name: Energy
     view: yes
+    entities:
+      - group.energy
+  energy:
+    name: Energy Sensors
     entities:
       - sensor.aeotec_dsb09104_home_energy_meter_power
       - sensor.aeotec_dsb09104_home_energy_meter_energy
@@ -211,13 +217,14 @@ group:
     entities:
       - weblink.router
       - weblink.energy_monitor
-  usps:
+  mail_view:
     name: Mail
     view: yes
     entities:
-      - camera.usps_mail
-      - sensor.usps_mail
-      - sensor.usps_packages
+      - group.mail
+  mail:
+    name: Deliveries
+    entities:
       - sensor.ups
       - sensor.fedex
   pi_stats:
