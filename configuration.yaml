@@ -148,11 +148,7 @@ group:
   garage:
     name: Garage
     entities:
-      - binary_sensor.garage_sensor
-      - script.trigger_garage_door
-      - switch.garage
-      - script.close_garage_door
-      - script.open_garage_door
+      - cover.garage_door
   people:
     name: People
     entities:
@@ -248,6 +244,37 @@ group:
       - sensor.home_assistant_total
       - sensor.home_assistant_running
       - sensor.home_assistant_sleeping
+  automations:
+    name: Automations
+    entities:
+      - automation.bedtime
+      - automation.bus_on_a_band_day
+      - automation.christmas
+      - automation.christmas_lights_off
+      - automation.evening
+      - automation.family_room_lights_off
+      - automation.family_room_lights_on
+      - automation.garage_door_battery_low
+      - automation.garage_door_is_opened
+      - automation.garage_door_was_closed
+      - automation.kids_bedtime
+      - automation.light_when_arrive_home
+      - automation.living_room_too_dim
+      - automation.living_room_tv_stopped
+      - automation.master_bedroom_tv_stopped
+      - automation.morning
+      - automation.no_ones_home
+      - automation.overcast
+      - automation.power_usage_is_low
+      - automation.rain_stopped
+      - automation.time_for_the_bus
+      - automation.watching_the_living_room_tv
+      - automation.watching_the_master_bedroom_tv
+  automations_view:
+    name: Automations
+    view: yes
+    entities:
+      - group.automations
 
 switch:
   - platform: template
@@ -389,6 +416,9 @@ scene: !include_dir_list scenes
 
 # Automations
 automation: !include automations.yaml
+
+# Covers
+cover: !include covers.yaml
 
 script:
   garage_door_alarm:
