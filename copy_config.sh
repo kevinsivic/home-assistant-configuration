@@ -1,10 +1,10 @@
 #!/bin/bash
 
-find ~homeassistant/.homeassistant/ -name '*.yaml' -print0 | 
+find /etc/homeassistant/ -name '*.yaml' -print0 | 
   while IFS= read -r -d $'\0' filename; do
-    if [ "${filename:35}" != "secrets.yaml" ]
+    if [ "${filename:19}" != "secrets.yaml" ]
     then
-      echo "Copying $filename to ${filename:35}";
-      cp $filename ${filename:35};
+      echo "Copying $filename to ${filename:19}";
+      cp $filename ${filename:19};
     fi
   done

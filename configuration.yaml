@@ -108,11 +108,11 @@ frontend:
 
 logger:
   default: critical
-#  logs:
-#    homeassistant.components.fedex: info
+  #  logs:
+  #    homeassistant.components.zwave: debug
 
 recorder:
-  db_url: mysql://homeassistant:Woovo5ko@localhost/hass
+  db_url: mysql://homeassistant:Woovo5ko@127.0.0.1/hass
 
 http:
   # Uncomment this to add a password (recommended!)

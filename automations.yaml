@@ -67,7 +67,7 @@
   trigger:
     platform: state
     entity_id: media_player.living_room
-    to: 'playing'
+    to: playing
   condition:
     condition: state
     entity_id: light.living_room_switch_level
@@ -80,7 +80,7 @@
   trigger:
     platform: state
     entity_id: media_player.living_room
-    from: 'playing'
+    from: playing
   condition:
     condition: state
     entity_id: light.living_room_switch_level
@@ -93,7 +93,7 @@
   trigger:
     platform: state
     entity_id: media_player.bedroom
-    to: 'playing'
+    to: playing
   condition:
     condition: state
     entity_id: light.master_bedroom_level
@@ -106,7 +106,7 @@
   trigger:
     platform: state
     entity_id: media_player.bedroom
-    from: 'playing'
+    from: playing
   condition:
     condition: state
     entity_id: light.master_bedroom_level
@@ -129,6 +129,8 @@
     entity_id: light.garage_entrance_dimmer_level
     data:
       brightness: 128
+  - service: homeassistant.turn_on
+    entity_id: switch.outdoor_garage_lights_switch
   - service: homeassistant.turn_on
     entity_id: script.garage_door_light
 - id: garage_door_light_turned_off
@@ -155,6 +157,20 @@
     entity_id: media_player.home
     data:
       message: It's time for the bus, I hope you all have a wonderful day!
+- id: garbage_day
+  alias: Garbage Day
+  trigger:
+    platform: time
+    at: 07:30:00
+  condition:
+  - condition: time
+    weekday:
+    - tue
+  action:
+  - service: tts.google_say
+    entity_id: media_player.home
+    data:
+      message: Don't forget garbage day!
 - id: bus_on_band_day
   alias: Bus on a band day
   trigger:
@@ -214,7 +230,7 @@
   alias: Morning
   trigger:
     platform: time
-    at: '06:30:00'
+    at: 06:30:00
   action:
     service: scene.turn_on
     entity_id: scene.morning
@@ -280,7 +296,7 @@
     offset: -00:30:00
   action:
     service: scene.turn_on
-    entity_id: scene.christmas 
+    entity_id: scene.christmas
 - id: christmas_off
   alias: Christmas Lights Off
   trigger:
@@ -308,4 +324,20 @@
   id: '1511405913546'
   trigger:
   - at: '20:00'
+    platform: time
+- action:
+  - data:
+      brightness_pct: '5'
+      entity_id: light.master_bedroom_level
+    service: light.turn_on
+  - data:
+      brightness_pct: '50'
+      entity_id: light.master_bedroom_level
+      transition: '600'
+    service: light.turn_on
+  alias: wake up
+  condition: []
+  id: '1520053340627'
+  trigger:
+  - at: 06:45
     platform: time

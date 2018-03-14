@@ -1,0 +1,108 @@
+sensor.aeotec_dsb09104_home_energy_meter_unknown:
+  platform: zwave
+  unique_id: 6-144115188181532674
+sensor.aeotec_dsb09104_home_energy_meter_unknown_2:
+  platform: zwave
+  unique_id: 6-216172782219460610
+sensor.aeotec_dsb09104_home_energy_meter_power:
+  platform: zwave
+  unique_id: 6-72057594143604866
+sensor.aeotec_dsb09104_home_energy_meter_exporting:
+  platform: zwave
+  unique_id: 6-72057594143605248
+sensor.aeotec_dsb09104_home_energy_meter_power_2:
+  platform: zwave
+  unique_id: 6-144115188181532802
+sensor.aeotec_dsb09104_home_energy_meter_exporting_2:
+  platform: zwave
+  unique_id: 6-144115188181533184
+sensor.aeotec_dsb09104_home_energy_meter_power_3:
+  platform: zwave
+  unique_id: 6-216172782219460738
+sensor.aeotec_dsb09104_home_energy_meter_exporting_3:
+  platform: zwave
+  unique_id: 6-216172782219461120
+sensor.aeotec_dsb09104_home_energy_meter_power_4:
+  platform: zwave
+  unique_id: 6-144115188181516354
+sensor.aeotec_dsb09104_home_energy_meter_power_5:
+  platform: zwave
+  unique_id: 6-216172782219444290
+sensor.aeotec_dsb09104_home_energy_meter_previous_reading:
+  platform: zwave
+  unique_id: 6-72057594143604754
+sensor.aeotec_dsb09104_home_energy_meter_interval:
+  platform: zwave
+  unique_id: 6-72057594143604771
+sensor.aeotec_dsb09104_home_energy_meter_previous_reading_2:
+  platform: zwave
+  unique_id: 6-144115188181532690
+sensor.aeotec_dsb09104_home_energy_meter_interval_2:
+  platform: zwave
+  unique_id: 6-144115188181532707
+sensor.aeotec_dsb09104_home_energy_meter_previous_reading_3:
+  platform: zwave
+  unique_id: 6-216172782219460626
+sensor.aeotec_dsb09104_home_energy_meter_interval_3:
+  platform: zwave
+  unique_id: 6-216172782219460643
+sensor.garage_alarm_type:
+  platform: zwave
+  unique_id: 2-72057594077528065
+sensor.garage_alarm_level:
+  platform: zwave
+  unique_id: 2-72057594077528081
+sensor.garage_sourcenodeid:
+  platform: zwave
+  unique_id: 2-72057594077528097
+sensor.garage_burglar:
+  platform: zwave
+  unique_id: 2-72057594077528225
+sensor.aeotec_dsb09104_home_energy_meter_previous_reading_4:
+  platform: zwave
+  unique_id: 6-72057594143604882
+sensor.aeotec_dsb09104_home_energy_meter_interval_4:
+  platform: zwave
+  unique_id: 6-72057594143604899
+switch.outdoor_garage_lights_switch:
+  platform: zwave
+  unique_id: 11-72057594227277824
+binary_sensor.garage_sensor:
+  platform: zwave
+  unique_id: 2-72057594076463104
+switch.linear_fs20z_isolated_contact_fixture_module_switch:
+  platform: zwave
+  unique_id: 5-72057594126614528
+sensor.aeotec_dsb09104_home_energy_meter_power_6:
+  platform: zwave
+  unique_id: 6-72057594143588418
+sensor.aeotec_dsb09104_home_energy_meter:
+  platform: zwave
+  unique_id: 6-72057594143604738
+switch.family_room_outlet_switch:
+  platform: zwave
+  unique_id: 7-72057594160168960
+switch.family_room_switch_switch:
+  platform: zwave
+  unique_id: 8-72057594176946176
+light.garage_entrance_dimmer_level:
+  platform: zwave
+  unique_id: 9-72057594193739777
+switch.front_porch_outlet_switch:
+  platform: zwave
+  unique_id: 10-72057594210500608
+light.living_room_switch_level:
+  platform: zwave
+  unique_id: 12-72057594244071425
+light.stairway_dimmer_level:
+  platform: zwave
+  unique_id: 13-72057594260848641
+light.upstairs_hallway_dimmer_level:
+  platform: zwave
+  unique_id: 14-72057594277625857
+light.front_hallway_dimmer_level:
+  platform: zwave
+  unique_id: 15-72057594294403073
+light.master_bedroom_level:
+  platform: zwave
+  unique_id: 16-72057594311180289
