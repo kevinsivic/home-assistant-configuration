@@ -209,71 +209,76 @@
   action:
     service: scene.turn_on
     entity_id: scene.evening
-- id: noonehome
-  alias: No One's Home
-  trigger:
-    platform: state
-    entity_id: group.people
-    to: not_home
-  action:
-    service: scene.turn_on
-    entity_id: scene.alloff
-- id: bedtime
-  alias: Bedtime
-  trigger:
-    platform: time
-    at: '23:30:00'
-  action:
-    service: scene.turn_on
-    entity_id: scene.bedtime
-- id: morning
-  alias: Morning
-  trigger:
-    platform: time
-    at: 06:30:00
-  action:
-    service: scene.turn_on
-    entity_id: scene.morning
-- id: overcast
-  alias: Overcast
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.dark_sky_cloud_coverage
-    above: 60
-  condition:
-    condition: and
-    conditions:
-    - condition: sun
-      after: sunrise
-    - condition: sun
-      before: sunset
-    - condition: or
-      conditions:
-      - condition: state
-        entity_id: device_tracker.pi_katie
-        state: home
-      - condition: state
-        entity_id: device_tracker.pi_kevin
-        state: home
-      - condition: state
-        entity_id: device_tracker.pi_jacob
-        state: home
-  action:
-    service: scene.turn_on
-    entity_id: scene.overcast
-- id: skies_clearing
-  alias: Rain Stopped
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.dark_sky_cloud_coverage
-    below: 40
-  condition:
-    condition: sun
-    before: sunset
-    after_offset: -01:00:00
-  action:
-    service: scene.turn_on
-    entity_id: scene.daytime
+#- id: noonehome
+#  alias: No One's Home
+#  trigger:
+#    platform: state
+#    entity_id: group.people
+#    to: not_home
+#  action:
+#    service: scene.turn_on
+#    entity_id: scene.alloff
+
+#- id: bedtime
+#  alias: Bedtime
+#  trigger:
+#    platform: time
+#    at: '23:30:00'
+#  action:
+#    service: scene.turn_on
+#    entity_id: scene.bedtime
+
+#- id: morning
+#  alias: Morning
+#  trigger:
+#    platform: time
+#    at: 06:30:00
+#  action:
+#    service: scene.turn_on
+#    entity_id: scene.morning
+    
+#- id: overcast
+#  alias: Overcast
+#  trigger:
+#  - platform: numeric_state
+#    entity_id: sensor.dark_sky_cloud_coverage
+#    above: 60
+#  condition:
+#    condition: and
+#    conditions:
+#    - condition: sun
+#      after: sunrise
+#    - condition: sun
+#      before: sunset
+#    - condition: or
+#      conditions:
+#      - condition: state
+#        entity_id: device_tracker.pi_katie
+#        state: home
+#      - condition: state
+#        entity_id: device_tracker.pi_kevin
+#        state: home
+#      - condition: state
+#        entity_id: device_tracker.pi_jacob
+#        state: home
+#  action:
+#    service: scene.turn_on
+#    entity_id: scene.overcast
+
+#- id: skies_clearing
+#  alias: Rain Stopped
+#  trigger:
+#  - platform: numeric_state
+#    entity_id: sensor.dark_sky_cloud_coverage
+#    below: 40
+#  condition:
+#    condition: sun
+#    before: sunset
+#    after_offset: -01:00:00
+#  action:
+#    service: scene.turn_on
+#    entity_id: scene.daytime
+
 - id: living_room_too_dim
   alias: Living Room too Dim
   trigger:
@@ -325,19 +330,20 @@
   trigger:
   - at: '20:00'
     platform: time
-- action:
-  - data:
-      brightness_pct: '5'
-      entity_id: light.master_bedroom_level
-    service: light.turn_on
-  - data:
-      brightness_pct: '50'
-      entity_id: light.master_bedroom_level
-      transition: '600'
-    service: light.turn_on
-  alias: wake up
-  condition: []
-  id: '1520053340627'
-  trigger:
-  - at: 06:45
-    platform: time
+
+#- action:
+#  - data:
+#      brightness_pct: '5'
+#      entity_id: light.master_bedroom_level
+#    service: light.turn_on
+#  - data:
+#      brightness_pct: '50'
+#      entity_id: light.master_bedroom_level
+#      transition: '600'
+#    service: light.turn_on
+#  alias: wake up
+#  condition: []
+#  id: '1520053340627'
+#  trigger:
+#  - at: 06:45
+#    platform: time

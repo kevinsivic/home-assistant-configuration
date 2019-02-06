@@ -15,3 +15,9 @@ entities:
   light.garage_entrance_dimmer_level:
     state: on
     brightness_pct: 75
+  light.kitchen_table:
+    state: on
+    brightness_pct: 75
+  light.kitchen:
+    state: on
+    brightness_pct: 100

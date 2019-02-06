@@ -16,5 +16,15 @@ entities:
     state: off
   light.master_bedroom_level:
     state: off
+  light.kitchen:
+    state: off
+  light.kitchen_table:
+    state: off
+  light.jacobs_bedroom:
+    state: off
+  light.emmas_bedroom:
+    state: off
+  light.madelyns_bedroom:
+    state: off
 #  switch.front_porch_outlet_switch:
 #    state: off

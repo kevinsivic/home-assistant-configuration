@@ -19,3 +19,9 @@ entities:
     state: on
   switch.outdoor_garage_lights_switch:
     state: on
+  light.front_door:
+    state: on
+    brightness_pct: 100
+  light.front_porch:
+    state: on
+    brightness_pct: 30

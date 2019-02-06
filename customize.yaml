@@ -1,0 +1,36 @@
+automation.master_bedroom_tv_stopped:
+  homebridge_hidden: true
+fan.level:
+  friendly_name: Living Room Fan
+scene.bedtime:
+  entity_id:
+  - light.upstairs_hallway_dimmer_level
+  - light.stairway_dimmer_level
+  - light.living_room_switch_level
+  - light.front_hallway_dimmer_level
+  - light.garage_entrance_dimmer_level
+  - switch.family_room_switch_switch
+  - switch.outdoor_garage_lights_switch
+  - light.kitchen
+group.lights:
+  entity_id:
+  - switch.family_room_switch_switch
+  - switch.family_room_outlet_switch
+  - light.garage_entrance_dimmer_level
+  - light.living_room_switch_level
+  - light.stairway_dimmer_level
+  - light.upstairs_hallway_dimmer_level
+  - switch.front_porch_outlet_switch
+  - switch.outdoor_garage_lights_switch
+  - light.front_hallway_dimmer_level
+  - light.master_bedroom_level
+  - light.kitchen
+  - light.kitchen_table
+  - light.front_porch
+  - light.front_door
+  - light.jacobs_bedroom
+  - light.emmas_bedroom
+  - light.madelyns_bedroom
+  order: 11
+light.ge_14294_inwall_smart_dimmer_level:
+  friendly_name: Dining Room Light

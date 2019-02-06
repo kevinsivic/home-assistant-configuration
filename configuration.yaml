@@ -125,8 +125,6 @@ weblink:
   entities:
     - name: Energy Monitor
       url: http://home.sivic.me:8122/emoncms/
-    - name: Router
-      url: http://192.168.29.1/
 
 panel_iframe:
   energy_monitor:
@@ -137,12 +135,14 @@ panel_iframe:
 # Groups
 group:
   default_view:
+    name: Home
     view: yes
     entities:
       - group.people
       - group.garage
       - group.weather
       - group.lights
+      - group.fans
       - group.links
       - scene.lights_on
   garage:
@@ -178,9 +178,25 @@ group:
     name: Media Players
     view: yes
     entities:
-      - media_player.bedroom
-      - media_player.living_room
+      - group.speakers
+      - group.speaker_groups
+      - group.chromecasts
+  speakers:
+    name: Speakers
+    entities:
       - media_player.kitchen_home
+      - media_player.master_bedroom_home
+      - media_player.jacobs_bedroom_speaker
+      - media_player.emmas_room_speaker
+  speaker_groups:
+    name: Speaker Groups
+    entities:
+      - media_player.upstairs
+  chromecasts:
+    name: Chromecasts
+    entities:
+      - media_player.living_room_tv
+      - media_player.bedroom_tv
   scenes:
     name: Scenes
     view: yes
@@ -208,6 +224,15 @@ group:
       - switch.outdoor_garage_lights_switch
       - light.front_hallway_dimmer_level
       - light.master_bedroom_level
+      - light.kitchen
+      - light.kitchen_table
+      - light.front_porch
+      - light.front_door
+      - light.jacobs_bedroom
+  fans:
+    name: Fans
+    entities:
+      - fan.living_room
   links:
     name: Links
     entities:
@@ -304,7 +329,7 @@ history:
 # Enables support for energy tracking in EmonCMS
 emoncms_history:
   api_key: !secret emoncms_api_key
-  url: http://192.168.29.254/emoncms
+  url: http://192.168.86.253/emoncms
   inputnode: 1
   whitelist:
     - sensor.aeotec_dsb09104_home_energy_meter_interval
@@ -351,7 +376,7 @@ sensor:
       - 'process_thread'
       - 'process_sleeping'
   - platform: glances
-    host: 192.168.29.254
+    host: 192.168.86.253
     name: EmonCMS
     resources:
       - 'disk_use_percent'
@@ -399,7 +424,6 @@ config:
 zwave:
   usb_path: /dev/ttyACM0
   polling_interval: 30000
-  new_entity_ids: true
   debug: true
 
 # Pushbullet notifications
@@ -476,18 +500,23 @@ script:
 # Presence Detection
 device_tracker:
   - platform: owntracks
+    new_device_defaults:
+      track_new_devices: false
 
 zone:
-  name: Town
-  latitude: 43.009054
-  longitude: -78.636137
-  radius: 20000
-  passive: true
+  - name: Home
+    latitude: !secret latitude
+    longitude: !secret longitude
+    radius: 500
+    icon: mdi:home-assistant
+  - name: "Middle School"
+    latitude: 42.989549
+    longitude: -78.609802
+    radius: 750
+    icon: mdi:school
 
 google_assistant:
   project_id: sivic-homeassistant
-  client_id: asdlkfadLKFSDKLJSFjklsLKJ
-  access_token: UCydXqqXRIocS7Tj4M440HPJAWNIHH7mITTuIjb79gQFdzJueOaBa7Hl02E9vfl73ObeC6IJiKMrunbNXJKBiiHsN6sRmHxfDDty
   api_key: AIzaSyCz8gWKpFtqWV_f72QBeTJtKh_N_pWvhfU
   exposed_domains:
     - switch
@@ -495,3 +524,16 @@ google_assistant:
     - scene
   expose_by_default: true
 
+light:
+  - platform: mqtt
+    schema: json
+    name: cabinet_light_1
+    state_topic: "home/cabinet1"
+    command_topic: "home/cabinet1/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    effect: true
+    effect_list: [colorfade_slow, colorfade_fast, flash]
+    optimistic: false
+    qos: 0
