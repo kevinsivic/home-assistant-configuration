@@ -238,16 +238,6 @@ group:
     entities:
       - weblink.router
       - weblink.energy_monitor
-  mail_view:
-    name: Mail
-    view: yes
-    entities:
-      - group.mail
-  mail:
-    name: Deliveries
-    entities:
-      - sensor.ups
-      - sensor.fedex
   pi_stats:
     name: Pi Stats
     view: yes
@@ -313,6 +303,9 @@ switch:
         turn_off:
           service: homeassistant.turn_on
           entity_id: script.trigger_garage_door
+
+# Enable the system health component
+system_health:
 
 # Checks for available updates
 updater:
@@ -393,12 +386,6 @@ sensor:
       - 'process_total'
       - 'process_thread'
       - 'process_sleeping'
-  - platform: fedex
-    username: !secret fedex_username
-    password: !secret fedex_password
-  - platform: ups
-    username: !secret ups_username
-    password: !secret ups_password
 
 binary_sensor:
   - platform: template
@@ -409,7 +396,7 @@ binary_sensor:
 
 # Text to speech
 tts:
-  platform: google
+  platform: google_translate
 
 mqtt:
   broker: 127.0.0.1
@@ -424,7 +411,7 @@ config:
 zwave:
   usb_path: /dev/ttyACM0
   polling_interval: 30000
-  debug: true
+  #  debug: true
 
 # Pushbullet notifications
 notify:
@@ -498,10 +485,10 @@ script:
 
 
 # Presence Detection
-device_tracker:
-  - platform: owntracks
-    new_device_defaults:
-      track_new_devices: false
+#device_tracker:
+#  - platform: owntracks
+#    new_device_defaults:
+#      track_new_devices: false
 
 zone:
   - name: Home
@@ -537,3 +524,8 @@ light:
     effect_list: [colorfade_slow, colorfade_fast, flash]
     optimistic: false
     qos: 0
+
+input_boolean:
+  lights_off_away:
+    name: Turn Lights off when away
+    icon: mdi:home-account

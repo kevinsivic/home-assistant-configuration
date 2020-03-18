@@ -83,6 +83,7 @@ views:
         title: Automations
         show_header_toggle: true
         entities:
+          - input_boolean.lights_off_away
           - automation.evening
           - automation.christmas_lights_off
           - automation.garage_door_was_closed
