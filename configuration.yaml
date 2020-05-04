@@ -229,6 +229,8 @@ group:
       - light.front_porch
       - light.front_door
       - light.jacobs_bedroom
+      - light.madelyns_bedroom
+      - light.emmas_bedroom
   fans:
     name: Fans
     entities:
@@ -303,6 +305,9 @@ switch:
         turn_off:
           service: homeassistant.turn_on
           entity_id: script.trigger_garage_door
+
+# enable the mobile app integration
+mobile_app:
 
 # Enable the system health component
 system_health:
