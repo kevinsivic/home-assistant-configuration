@@ -171,23 +171,6 @@
     entity_id: media_player.home
     data:
       message: Don't forget garbage day!
-- id: bus_on_band_day
-  alias: Bus on a band day
-  trigger:
-    platform: time
-    at: 07:34:00
-  condition:
-  - condition: time
-    weekday:
-    - tue
-    - wed
-    - thu
-  action:
-  - service: tts.google_say
-    entity_id: media_player.home
-    data:
-      message: It's time for the bus, don't forget your clarinet Jacob! I hope you
-        all have a wonderful day!
 - id: evening
   alias: Evening
   trigger:
@@ -223,15 +206,6 @@
     data:
       entity_id: light.living_room_switch_level
       brightness_pct: 15
-- id: christmas
-  alias: Christmas
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: -00:30:00
-  action:
-    service: scene.turn_on
-    entity_id: scene.christmas
 - id: christmas_off
   alias: Christmas Lights Off
   trigger:
@@ -270,3 +244,37 @@
   - data:
       entity_id: scene.bedtime
     service: homeassistant.turn_on
+- id: '1588036791076'
+  alias: Kevin Sleep
+  trigger:
+  - platform: webhook
+    webhook_id: kevin_sleep
+  condition: []
+  action:
+  - service: light.turn_off
+- id: '1588307891613'
+  alias: master wake up
+  trigger:
+  - platform: webhook
+    webhook_id: wake_up_master
+  condition: []
+  action:
+  - data:
+      brightness_pct: '5'
+      entity_id: light.master_bedroom_level
+    service: light.turn_on
+  - data:
+      brightness_pct: '50'
+      entity_id: light.master_bedroom_level
+      transition: '600'
+    service: light.turn_on
+- id: '1588384154438'
+  alias: master go to sleep
+  trigger:
+  - platform: webhook
+    webhook_id: master_go_to_sleep
+  condition: []
+  action:
+  - data:
+      entity_id: light.master_bedroom_level
+    service: light.turn_off
