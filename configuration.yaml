@@ -10,6 +10,12 @@ homeassistant:
   unit_system: imperial
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: America/New_York
+  auth_providers:
+    - type: homeassistant
+    - type: legacy_api_password
+      api_password: !secret hass_api_password
+
+
 
   # Customize device settings
   customize:
@@ -112,19 +118,12 @@ logger:
   #    homeassistant.components.zwave: debug
 
 recorder:
-  db_url: mysql://homeassistant:Woovo5ko@127.0.0.1/hass
+  db_url: mysql://homeassistant:Woovo5ko@127.0.0.1/homeassistant
 
 http:
-  # Uncomment this to add a password (recommended!)
-  api_password: !secret hass_api_password
   ssl_certificate: /etc/letsencrypt/live/home.sivic.me/fullchain.pem
   ssl_key: /etc/letsencrypt/live/home.sivic.me/privkey.pem
   base_url: https://home.sivic.me
-
-weblink:
-  entities:
-    - name: Energy Monitor
-      url: http://home.sivic.me:8122/emoncms/
 
 panel_iframe:
   energy_monitor:
@@ -132,11 +131,14 @@ panel_iframe:
     url: !secret emoncms_monitor_url
     icon: mdi:chart-line
 
+climate:
+  - platform: radiotherm
+    host:
+      - 192.168.86.26
 # Groups
 group:
   default_view:
     name: Home
-    view: yes
     entities:
       - group.people
       - group.garage
@@ -157,7 +159,6 @@ group:
       - device_tracker.pi_jacob
   energy_view: 
     name: Energy
-    view: yes
     entities:
       - group.energy
   energy:
@@ -176,7 +177,6 @@ group:
       - sensor.dark_sky_temperature
   media_players:
     name: Media Players
-    view: yes
     entities:
       - group.speakers
       - group.speaker_groups
@@ -199,7 +199,6 @@ group:
       - media_player.bedroom_tv
   scenes:
     name: Scenes
-    view: yes
     entities:
       - scene.morning
       - scene.daytime
@@ -235,14 +234,8 @@ group:
     name: Fans
     entities:
       - fan.living_room
-  links:
-    name: Links
-    entities:
-      - weblink.router
-      - weblink.energy_monitor
   pi_stats:
     name: Pi Stats
-    view: yes
     entities:
       - group.home_assistant_stats
   home_assistant_stats:
@@ -289,7 +282,6 @@ group:
       - automation.watching_the_master_bedroom_tv
   automations_view:
     name: Automations
-    view: yes
     entities:
       - group.automations
 
@@ -509,11 +501,12 @@ zone:
 
 google_assistant:
   project_id: sivic-homeassistant
-  api_key: AIzaSyCz8gWKpFtqWV_f72QBeTJtKh_N_pWvhfU
+  service_account: !include sivic-homeassistant-b4d2defecaca.json
   exposed_domains:
     - switch
     - light
     - scene
+    - climate
   expose_by_default: true
 
 light:
