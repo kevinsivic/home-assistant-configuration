@@ -117,6 +117,8 @@ logger:
   #  logs:
   #    homeassistant.components.zwave: debug
 
+influxdb:
+
 recorder:
   db_url: mysql://homeassistant:Woovo5ko@127.0.0.1/homeassistant
 
@@ -383,6 +385,18 @@ sensor:
       - 'process_total'
       - 'process_thread'
       - 'process_sleeping'
+  - platform: template
+    sensors:
+      indoor_humidity:
+        friendly_name: Indoor Humidity
+        unit_of_measurement: percentage
+        value_template: '{{ states.climate.home.attributes.current_humidity }}'
+  - platform: template
+    sensors:
+      indoor_temp:
+        friendly_name: Indoor Temperature
+        unit_of_measurement: degree
+        value_template: '{{ states.climate.home.attributes.current_temperature }}'
 
 binary_sensor:
   - platform: template

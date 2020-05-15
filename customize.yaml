@@ -34,3 +34,5 @@ group.lights:
   order: 11
 light.ge_14294_inwall_smart_dimmer_level:
   friendly_name: Dining Room Light
+climate.home:
+  friendly_name: Thermostat
