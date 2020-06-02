@@ -111,6 +111,7 @@ map:
 # Enables the frontend
 frontend:
   javascript_version: latest
+  themes: !include_dir_merge_named themes
 
 logger:
   default: critical
@@ -391,12 +392,13 @@ sensor:
         friendly_name: Indoor Humidity
         unit_of_measurement: percentage
         value_template: '{{ states.climate.home.attributes.current_humidity }}'
-  - platform: template
-    sensors:
       indoor_temp:
         friendly_name: Indoor Temperature
         unit_of_measurement: degree
         value_template: '{{ states.climate.home.attributes.current_temperature }}'
+      hvac_status:
+        friendly_name: HVAC Status
+        value_template: '{{ state_attr("climate.home", "hvac_action") }}'
 
 binary_sensor:
   - platform: template
@@ -404,6 +406,9 @@ binary_sensor:
       power_usage_low:
         friendly_name: Power Usage Is Low!
         value_template: '{% if states.sensor.aeotec_dsb09104_home_energy_meter_power_6_8.state %}{{ states.sensor.aeotec_dsb09104_home_energy_meter_power_6_8.state | float < 500 }}{% endif %}'
+      hvac_fan_status:
+        friendly_name: HVAC Fan Status
+        value_template: '{{ is_state_attr("climate.home", "fan_action", "on") }}'
 
 # Text to speech
 tts:

@@ -10,7 +10,5 @@ entities:
     state: off
   light.garage_entrance_dimmer_level:
     state: off
-  switch.family_room_switch_switch:
-    state: off
   switch.outdoor_garage_lights_switch:
     state: off
