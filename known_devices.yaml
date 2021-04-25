@@ -1,26 +1,26 @@
 
-pi_katie:
-  hide_if_away: false
-  mac:
-  name: Katie
-  picture: /local/Katie.jpg
-  track: true
-  vendor:
+#pi_katie:
+#  hide_if_away: false
+#  mac:
+#  name: Katie
+#  picture: /local/Katie.jpg
+#  track: true
+#  vendor:
 
-pi_kevin:
-  hide_if_away: false
-  mac:
-  name: Kevin
-  picture: /local/Kevin.jpg
-  track: true
-  vendor:
+          #pi_kevin:
+          #  hide_if_away: false
+          #  mac:
+          #  name: Kevin
+          #  picture: /local/Kevin.jpg
+          #  track: true
+          #  vendor:
 
-pi_jacob:
-  hide_if_away: false
-  icon:
-  mac:
-  name: Jacob
-  picture: /local/Jacob.jpg
-  track: true
-  vendor:
+          #pi_jacob:
+          #  hide_if_away: false
+          #  icon:
+          #  mac:
+          #  name: Jacob
+          #  picture: /local/Jacob.jpg
+          #  track: true
+          #  vendor:
 

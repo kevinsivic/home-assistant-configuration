@@ -1,0 +1,70 @@
+version: '3'
+volumes:
+  node_red_data:
+services:
+  homeassistant:
+    container_name: home-assistant
+    image: homeassistant/home-assistant:stable
+    volumes:
+      - /etc/homeassistant:/config
+      - /etc/letsencrypt:/config/letsencrypt
+      - /home/kevin/Pictures/home-assistant:/snapshots
+    environment:
+      - TZ=America/New_York
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    restart: always
+    network_mode: host
+  mysql_db:
+    container_name: mysql
+    image: mysql:latest
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Woovo5ko
+    network_mode: host
+    restart: always
+  influxdb:
+    container_name: influxdb
+    image: influxdb:1.8.2
+    volumes:
+      - /var/lib/influxdb:/var/lib/influxdb
+      - /etc/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    network_mode: host
+    restart: always
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    volumes:
+      - /var/lib/grafana:/var/lib/grafana
+    network_mode: host
+    restart: always
+  nodered:
+    container_name: nodered
+    image: nodered/node-red
+    network_mode: host
+    restart: always
+    volumes:
+      - node_red_data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    volumes:
+      - /var/lib/mosquitto:/mosquitto/data
+      - /etc/mosquitto:/mosquitto/config
+    network_mode: host
+    restart: always
+  glances:
+    container_name: glances
+    image: nicolargo/glances:latest
+    restart: always
+    pid: host
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "GLANCES_OPT=-w"
+    security_opt:
+      - apparmor=unconfined

@@ -15,7 +15,8 @@ homeassistant:
     - type: legacy_api_password
       api_password: !secret hass_api_password
 
-
+  allowlist_external_dirs:
+    - /snapshots
 
   # Customize device settings
   customize:
@@ -115,8 +116,8 @@ frontend:
 
 logger:
   default: critical
-  #  logs:
-  #    homeassistant.components.zwave: debug
+  #logs:
+  #  homeassistant.components.http: debug
 
 influxdb:
 
@@ -124,15 +125,25 @@ recorder:
   db_url: mysql://homeassistant:Woovo5ko@127.0.0.1/homeassistant
 
 http:
-  ssl_certificate: /etc/letsencrypt/live/home.sivic.me/fullchain.pem
-  ssl_key: /etc/letsencrypt/live/home.sivic.me/privkey.pem
-  base_url: https://home.sivic.me
+  ssl_certificate: /config/letsencrypt/live/home.sivic.me/fullchain.pem
+  ssl_key: /config/letsencrypt/live/home.sivic.me/privkey.pem
 
 panel_iframe:
   energy_monitor:
     title: Energy Monitor
     url: !secret emoncms_monitor_url
     icon: mdi:chart-line
+
+amcrest:
+  - host: 192.168.86.41
+    name: Doorbell Camera
+    username: admin
+    password: Woovo5ko
+    scan_interval: 1
+    stream_source: rtsp
+    binary_sensors:
+      - motion_detected
+      - online
 
 climate:
   - platform: radiotherm
@@ -154,12 +165,12 @@ group:
     name: Garage
     entities:
       - cover.garage_door
-  people:
-    name: People
-    entities:
-      - device_tracker.pi_katie
-      - device_tracker.pi_kevin
-      - device_tracker.pi_jacob
+        #  people:
+        #    name: People
+        #    entities:
+        #      - device_tracker.pi_katie
+        #      - device_tracker.pi_kevin
+        #      - device_tracker.pi_jacob
   energy_view: 
     name: Energy
     entities:
@@ -427,6 +438,7 @@ config:
 zwave:
   usb_path: /dev/ttyACM0
   polling_interval: 30000
+  network_key: "0x6D, 0x7F, 0x53, 0x66, 0xAC, 0x29, 0x2C, 0x01, 0xBD, 0x44, 0x6B, 0x02, 0x59, 0x88, 0x23, 0x7D"
   #  debug: true
 
 # Pushbullet notifications
@@ -440,6 +452,7 @@ notify:
 
 # Scenes
 scene: !include_dir_list scenes
+scene ui: !include scenes.yaml
 
 # Automations
 automation: !include automations.yaml
