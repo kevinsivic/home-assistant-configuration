@@ -98,19 +98,6 @@
   action:
     service: scene.turn_on
     entity_id: scene.watching_master_bedroom_tv
-- id: master_tv_stopped
-  alias: Master bedroom TV stopped
-  trigger:
-    platform: state
-    entity_id: media_player.bedroom
-    from: playing
-  condition:
-    condition: state
-    entity_id: light.master_bedroom_level
-    state: 'on'
-  action:
-    service: scene.turn_on
-    entity_id: scene.master_bedroom_tv_stopped
 - id: arrive_home
   alias: Light When Arrive Home
   trigger:
@@ -325,4 +312,59 @@
     type: notify
     title: Garage
     message: Garage Door Opened!
+  mode: single
+- id: '1619321675788'
+  alias: Living Room Ceiling Fan Off
+  description: Turn the living room ceiling fan off when both living room lights turn
+    off.
+  trigger:
+  - platform: device
+    type: turned_off
+    device_id: f8b038107e6f51cb2574ad1408f65ba3
+    entity_id: switch.living_room_fan_light
+    domain: switch
+  - platform: device
+    type: turned_off
+    device_id: 8b381900232f4038b6427f8da7a0029e
+    entity_id: light.living_room_switch_level
+    domain: light
+  condition:
+  - condition: device
+    type: is_off
+    device_id: f8b038107e6f51cb2574ad1408f65ba3
+    entity_id: switch.living_room_fan_light
+    domain: switch
+  - condition: device
+    type: is_off
+    device_id: 8b381900232f4038b6427f8da7a0029e
+    entity_id: light.living_room_switch_level
+    domain: light
+  action:
+  - device_id: 332995afe62c4af2842f5cecc533a593
+    domain: fan
+    entity_id: fan.living_room_fan_level
+    type: turn_off
+  mode: single
+- id: '1619321803240'
+  alias: Living Room Ceiling Fan On
+  description: Turn the living room ceiling fan on when either living room light is
+    turned on.
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: f8b038107e6f51cb2574ad1408f65ba3
+    entity_id: switch.living_room_fan_light
+    domain: switch
+  - platform: device
+    type: turned_on
+    device_id: 8b381900232f4038b6427f8da7a0029e
+    entity_id: light.living_room_switch_level
+    domain: light
+  condition: []
+  action:
+  - service: fan.turn_on
+    data:
+      percentage: 33
+    target:
+      device_id: 332995afe62c4af2842f5cecc533a593
   mode: single
